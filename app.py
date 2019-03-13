@@ -7,44 +7,35 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
-data = [
-    {
-        '97bfd34132394e23ca5905ec730f776a': 'text/97bfd34132394e23ca5905ec730f776a.txt'
-    }
-]
+data = {}
 
 class Data(Resource):
-    def get(self, type, url):
-        print("GET")
-        for link in data:
-            if(url == link['url']):
-                return url, 200
-            else:
-                return "Not found", 404
-
-    def post(self, type, url):
-        print("POST")
-        if type.lower() == "text":
-            text = txt.Text()
-            dict = text.get_text(url)
-            #data.append(json.dumps(dict))
-            data = json.dumps(dict)
-
-        elif type.lower() == "image":
-            scraper = img.Scraper()
-            dict = scraper.get_img(url)
-            data = json.dumps(dict)
-            #data.append(json.dumps(dict))
-
-        print(str(data))
+    def get(self, content_type, url):
+        global data
         return data, 200
 
-    def put(self, url):
-        return
+    def post(self, content_type, url):
+        global data
+        if content_type.lower() == "text":
+            text = txt.Text()
+            dict = text.get_text(url)
+            data.update(dict)
 
-    def delete(self, url):
-        return
+        elif content_type.lower() == "image":
+            scraper = img.Scraper()
+            dict = scraper.get_img(url)
+            data.update(dict)
 
-api.add_resource(Data, "/api/<string:type>/<path:url>")
+        return data, 201
+
+    def delete(self, content_type, url):
+        global data
+        try:
+            del data[url]
+            return "File {} was deleted".format(url), 200
+        except KeyError:
+            return "No such element: {}".format(url), 400
+
+api.add_resource(Data, "/api/<string:content_type>/<path:url>")
 
 app.run(debug=True)
