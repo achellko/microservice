@@ -23,6 +23,7 @@ class Data(Resource):
             text = txt.Text()
             dict = text.get_text(url)
             data = json.dumps(dict)
+            print(data)
 
         elif type.lower() == "image":
             scraper = img.Scraper()
@@ -38,6 +39,9 @@ class Data(Resource):
     def delete(self, url):
         return
 
-api.add_resource(Data, "/data/<string:type>/<string:url>")
+# print(str(txt.Text().get_text('https://gist.github.com/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a')))
+# print(str(img.Scraper().get_img('https://gist.github.com/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a')))
+
+api.add_resource(Data, "/api/<string:type>/<string:url>")
 
 app.run(debug=True)

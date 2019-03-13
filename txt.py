@@ -16,6 +16,3 @@ class Text:
             file.close()
             txt_dict[txt_name] = local_filename
         return txt_dict
-
-# text = Text()
-# print(str(text.get_text('https://www.quora.com/How-do-I-create-a-text-file-in-Python')))

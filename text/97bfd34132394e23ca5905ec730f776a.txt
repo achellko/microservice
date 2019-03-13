@@ -1,0 +1,390 @@
+Skip to content
+
+[ ](/)
+
+  * [All gists](/discover)
+  * [Back to GitHub](https://github.com)
+
+[Sign up for a GitHub account](/join?source=header-gist) [Sign
+in](https://gist.github.com/auth/github?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Instantly share code, notes, and snippets.
+
+#  [![@leon-
+sleepinglion](https://avatars3.githubusercontent.com/u/17495240?s=52&v=4)](/leon-
+sleepinglion) [leon-sleepinglion](/leon-sleepinglion)/ **[app.py](/leon-
+sleepinglion/97bfd34132394e23ca5905ec730f776a)**
+
+Created  Mar 7, 2018
+
+  * [ Star ](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-sleepinglion%2F97bfd34132394e23ca5905ec730f776a) [ 39 ](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a/stargazers)
+  * [ Fork ](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-sleepinglion%2F97bfd34132394e23ca5905ec730f776a) [ 14 ](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a/forks)
+
+[ Code ](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a) [ Revisions 1
+](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a/revisions) [ Stars 39
+](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a/stargazers) [ Forks 14
+](/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a/forks)
+
+Embed
+
+What would you like to do?
+
+Embed  Embed this gist in your website.
+
+Share  Copy sharable link for this gist.
+
+Clone via HTTPS  Clone with Git or checkout with SVN using the repository’s
+web address.
+
+[ Learn more about clone URLs  ](https://help.github.com/articles/which-
+remote-url-should-i-use)
+
+[ Download ZIP ](/leon-
+sleepinglion/97bfd34132394e23ca5905ec730f776a/archive/360bf7651077145438214455842de8d2390906cb.zip)
+
+[Raw](/leon-
+sleepinglion/97bfd34132394e23ca5905ec730f776a/raw/360bf7651077145438214455842de8d2390906cb/app.py)
+
+**app.py**
+
+|  from flask import Flask  
+---|---  
+| from flask_restful import Api, Resource, reqparse  
+|  
+| app = Flask(__name__)  
+| api = Api(app)  
+|  
+| users = [  
+|  {  
+|  "name": "Nicholas",  
+|  "age": 42,  
+|  "occupation": "Network Engineer"  
+|  },  
+|  {  
+|  "name": "Elvin",  
+|  "age": 32,  
+|  "occupation": "Doctor"  
+|  },  
+|  {  
+|  "name": "Jass",  
+|  "age": 22,  
+|  "occupation": "Web Developer"  
+|  }  
+| ]  
+|  
+| class User(Resource):  
+|  def get(self, name):  
+|  for user in users:  
+|  if(name == user["name"]):  
+|  return user, 200  
+|  return "User not found", 404  
+|  
+|  def post(self, name):  
+|  parser = reqparse.RequestParser()  
+|  parser.add_argument("age")  
+|  parser.add_argument("occupation")  
+|  args = parser.parse_args()  
+|  
+|  for user in users:  
+|  if(name == user["name"]):  
+|  return "User with name {} already exists".format(name), 400  
+|  
+|  user = {  
+|  "name": name,  
+|  "age": args["age"],  
+|  "occupation": args["occupation"]  
+|  }  
+|  users.append(user)  
+|  return user, 201  
+|  
+|  def put(self, name):  
+|  parser = reqparse.RequestParser()  
+|  parser.add_argument("age")  
+|  parser.add_argument("occupation")  
+|  args = parser.parse_args()  
+|  
+|  for user in users:  
+|  if(name == user["name"]):  
+|  user["age"] = args["age"]  
+|  user["occupation"] = args["occupation"]  
+|  return user, 200  
+|  
+|  user = {  
+|  "name": name,  
+|  "age": args["age"],  
+|  "occupation": args["occupation"]  
+|  }  
+|  users.append(user)  
+|  return user, 201  
+|  
+|  def delete(self, name):  
+|  global users  
+|  users = [user for user in users if user["name"] != name]  
+|  return "{} is deleted.".format(name), 200  
+|  
+| api.add_resource(User, "/user/<string:name>")  
+|  
+| app.run(debug=True)  
+  
+[![@KaranNayak](https://avatars0.githubusercontent.com/u/36022963?s=88&v=4)](/KaranNayak)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[KaranNayak](/KaranNayak) ** commented  Sep 20, 2018
+
+I get 404 page not found error, please help me  
+  
+---  
+  
+[![@joannawheeler](https://avatars2.githubusercontent.com/u/23461229?s=88&v=4)](/joannawheeler)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[joannawheeler](/joannawheeler) ** commented  Oct 10, 2018
+
+> I get 404 page not found error, please help me
+
+Is it because you forgot to add the name to your url?
+
+For an example of doing a get request for a user named Nicholas, you will need
+to write <http://127.0.0.1:5000/user/Nicholas> instead of just
+<http://127.0.0.1:5000>. The need for the name string is specified here:
+
+    
+    
+     api.add_resource(User, "/user/<string:name>")
+    
+
+[![expink](https://user-
+images.githubusercontent.com/23461229/46708070-c952be00-cbf1-11e8-81a1-1ce20a88dabf.jpg)](https://user-
+images.githubusercontent.com/23461229/46708070-c952be00-cbf1-11e8-81a1-1ce20a88dabf.jpg)  
+  
+---  
+  
+[![@romelrkhan](https://avatars3.githubusercontent.com/u/13736085?s=88&v=4)](/romelrkhan)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[romelrkhan](/romelrkhan) ** commented  Oct 29, 2018 •
+
+edited
+
+I am getting an exception as shown below. I am using Anaconda with Python 3.6
+on windows 10 pro. (I have no issue running this on linux by the way.)
+
+  * Restarting with stat  
+An exception has occurred, use %tb to see the full traceback.
+
+SystemExit: 1
+
+* * *
+
+Here is with the %tb:::  
+%tb  
+Traceback (most recent call last):
+
+File "", line 1, in  
+runfile('C:/Users/ctom/Documents/Python Scripts/temp3.py',
+wdir='C:/Users/ctom/Documents/Python Scripts')
+
+File "C:\Users\ctom\AppData\Local\Continuum\anaconda3\lib\site-
+packages\spyder\utils\site\sitecustomize.py", line 705, in runfile  
+execfile(filename, namespace)
+
+File "C:\Users\ctom\AppData\Local\Continuum\anaconda3\lib\site-
+packages\spyder\utils\site\sitecustomize.py", line 102, in execfile  
+exec(compile(f.read(), filename, 'exec'), namespace)
+
+File "C:/Users/ctom/Documents/Python Scripts/temp3.py", line 77, in  
+app.run(debug=True)
+
+File "C:\Users\ctom\AppData\Local\Continuum\anaconda3\lib\site-
+packages\flask\app.py", line 841, in run  
+run_simple(host, port, self, **options)
+
+File "C:\Users\ctom\AppData\Local\Continuum\anaconda3\lib\site-
+packages\werkzeug\serving.py", line 812, in run_simple  
+reloader_type)
+
+File "C:\Users\ctom\AppData\Local\Continuum\anaconda3\lib\site-
+packages\werkzeug_reloader.py", line 275, in run_with_reloader  
+sys.exit(reloader.restart_with_reloader())
+
+SystemExit: 1
+
+* * *
+
+code in _reloader.py is generating the system exit in function
+run_with_reloader. Snippet of code is shown below:::  
+if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':  
+t = threading.Thread(target=main_func, args=())  
+t.setDaemon(True)  
+t.start()  
+reloader.run()  
+else:  
+sys.exit(reloader.restart_with_reloader())
+
+My environment does not have 'WERKZEUG_RUN_MAIN' as a key though the flask
+install did not face any issue. So what should have set that key? Does this
+have to be manually set in windows for anaconda install?  
+The code actually runs properly with Anaconda when 'debug=True' is removed in
+app.run(debug=True).  
+  
+---  
+  
+[![@rkohardy](https://avatars2.githubusercontent.com/u/26404830?s=88&v=4)](/rkohardy)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[rkohardy](/rkohardy) ** commented  Nov 12, 2018
+
+<http://127.0.0.1:5000/user/Nicholas>  
+The requested URL was not found on the server. If you entered the URL manually
+please check your spelling and try again.  
+  
+---  
+  
+[![@dhruv14-4](https://avatars0.githubusercontent.com/u/43142474?s=88&v=4)](/dhruv14-4)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[dhruv14-4](/dhruv14-4) ** commented  Nov 16, 2018
+
+Why is it taking a GET request. Its nowhere specified in the code to take
+default GET function  
+How can we change it to another function(ex:POST)  
+  
+---  
+  
+[![@shivamtomar77](https://avatars3.githubusercontent.com/u/33312420?s=88&v=4)](/shivamtomar77)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[shivamtomar77](/shivamtomar77) ** commented  Feb 5, 2019
+
+def post(self, name):  
+^  
+IndentationError: expected an indented block
+
+How to solve it  
+  
+---  
+  
+[![@shivamtomar77](https://avatars3.githubusercontent.com/u/33312420?s=88&v=4)](/shivamtomar77)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[shivamtomar77](/shivamtomar77) ** commented  Feb 5, 2019
+
+/home/mtech/my_flask_app/venv/bin/python /home/mtech/my_flask_app/api.py  
+Traceback (most recent call last):  
+File "/home/mtech/my_flask_app/api.py", line 2, in  
+from flask_restful import Api, Resource, reqparse  
+File "/home/mtech/my_flask_app/flask_restful.py", line 2, in  
+from flask_restful import Resource, Api  
+ImportError: cannot import name 'Resource'
+
+I installed packages but show this error  
+please solve it  
+  
+---  
+  
+[![@shivamtomar77](https://avatars3.githubusercontent.com/u/33312420?s=88&v=4)](/shivamtomar77)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[shivamtomar77](/shivamtomar77) ** commented  Feb 5, 2019
+
+It will Show  
+127.0.0.1 - - [05/Feb/2019 18:40:32] "GET / HTTP/1.1" 404 -  
+127.0.0.1 - - [05/Feb/2019 18:40:40] "GET /user/name HTTP/1.1" 405 -  
+127.0.0.1 - - [05/Feb/2019 18:40:50] "GET /user/name HTTP/1.1" 405 -  
+  
+---  
+  
+[![@Aishwarya4823](https://avatars0.githubusercontent.com/u/29899714?s=88&v=4)](/Aishwarya4823)
+
+###  This comment has been minimized.
+
+[Sign in to view](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+Copy link  Quote reply
+
+###  **[Aishwarya4823](/Aishwarya4823) ** commented  Feb 13, 2019 •
+
+edited
+
+TypeError: get() missing 1 required positional argument: 'name' <\- This is
+what shows upon running 127.0.0.1:5000/user/Aish . Please help.Why am I seeing
+this message ?  
+  
+---  
+  
+[Sign up for free](/join?source=comment-gist) **to join this conversation on
+GitHub**. Already have an account? [Sign in to
+comment](/login?return_to=https%3A%2F%2Fgist.github.com%2Fleon-
+sleepinglion%2F97bfd34132394e23ca5905ec730f776a)
+
+  * (C) 2019 GitHub, Inc.
+  * [Terms](https://github.com/site/terms)
+  * [Privacy](https://github.com/site/privacy)
+  * [Security](https://github.com/security)
+  * [Status](https://githubstatus.com/)
+  * [Help](https://help.github.com)
+
+[ ](https://github.com "GitHub")
+
+  * [Contact GitHub](https://github.com/contact)
+  * [Pricing](https://github.com/pricing)
+  * [API](https://developer.github.com)
+  * [Training](https://training.github.com)
+  * [Blog](https://github.blog)
+  * [About](https://github.com/about)
+
+You can’t perform that action at this time.
+
+You signed in with another tab or window. [Reload]() to refresh your session.
+You signed out in another tab or window. [Reload]() to refresh your session.
+
