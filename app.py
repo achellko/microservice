@@ -18,7 +18,7 @@ class Data(Resource):
                 return url, 200
         return "Not found", 404
 
-    def post(self, url, type):
+    def post(self, type, url):
         if type.lower() == "text":
             text = txt.Text()
             dict = text.get_text(url)
@@ -38,6 +38,6 @@ class Data(Resource):
     def delete(self, url):
         return
 
-api.add_resource(Data, "/data/<string:url>")
+api.add_resource(Data, "/data/<string:type>/<string:url>")
 
 app.run(debug=True)
