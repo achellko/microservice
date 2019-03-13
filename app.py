@@ -8,30 +8,36 @@ app = Flask(__name__)
 api = Api(app)
 
 data = [
-    { }
+    {
+        '97bfd34132394e23ca5905ec730f776a': 'text/97bfd34132394e23ca5905ec730f776a.txt'
+    }
 ]
 
 class Data(Resource):
-    def get(self, url):
+    def get(self, type, url):
+        print("GET")
         for link in data:
             if(url == link['url']):
                 return url, 200
-        return "Not found", 404
+            else:
+                return "Not found", 404
 
     def post(self, type, url):
+        print("POST")
         if type.lower() == "text":
             text = txt.Text()
             dict = text.get_text(url)
+            #data.append(json.dumps(dict))
             data = json.dumps(dict)
-            print(data)
 
         elif type.lower() == "image":
             scraper = img.Scraper()
             dict = scraper.get_img(url)
             data = json.dumps(dict)
+            #data.append(json.dumps(dict))
 
-        print(data)
-        return data[url], 200
+        print(str(data))
+        return data, 200
 
     def put(self, url):
         return
@@ -39,9 +45,6 @@ class Data(Resource):
     def delete(self, url):
         return
 
-# print(str(txt.Text().get_text('https://gist.github.com/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a')))
-# print(str(img.Scraper().get_img('https://gist.github.com/leon-sleepinglion/97bfd34132394e23ca5905ec730f776a')))
-
-api.add_resource(Data, "/api/<string:type>/<string:url>")
+api.add_resource(Data, "/api/<string:type>/<path:url>")
 
 app.run(debug=True)
