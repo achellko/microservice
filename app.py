@@ -10,14 +10,30 @@ data = {}
 text = txt.Text()
 scraper = img.Scraper()
 
+"""
+Update data-json so it will represent an
+actual content of 'images' and 'text' folders
+"""
 data.update(text.check_fs_text(data))
 data.update(scraper.check_fs_img(data))
 
+"""
+RESTful API with CRUD functions
+"""
 class Data(Resource):
+
+    """
+    READ: shows current version of data-json
+    """
     def get(self, content_type, url):
         global data
         return data
 
+    """
+    CREATE: this function uploads content from given url: 
+    depending on 'content_type' flag, it will upload
+    all images from given webpage, or its text content
+    """
     def post(self, content_type, url):
         global data
         if content_type.lower() == "text":
@@ -32,6 +48,9 @@ class Data(Resource):
 
         return data, 201
 
+    """
+    DELETE: deletes file from file system and data-json
+    """
     def delete(self, content_type, url):
         global data
         try:
@@ -48,6 +67,10 @@ class Data(Resource):
         except KeyError:
             return "No such element: {}".format(url), 400
 
+    """
+    UPDATE: updates data-json, if some files don`t exist in file system,
+    it deletes them from data-json
+    """
     def put(self, content_type, url):
         global data
         if content_type.lower() == 'text':
@@ -58,6 +81,6 @@ class Data(Resource):
             return "Wrong type, must be 'text' or 'image'", 400
 
         return data, 200
-api.add_resource(Data, "/api/<string:content_type>/<path:url>")
 
+api.add_resource(Data, "/api/<string:content_type>/<path:url>")
 app.run(debug=True)
