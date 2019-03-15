@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import os
 
 class Scraper:
+    folder= 'images/'
+
     def __init__(self):
 
         self.visited = set()
@@ -34,7 +36,7 @@ class Scraper:
 
     def download_img(self, image_url):
         img_name = image_url.split('/')[-1].split("?")[0]
-        local_filename = 'images/'+img_name
+        local_filename = self.folder + img_name
 
         r = self.session.get(image_url, stream=True, verify=False)
         with open(local_filename, 'wb') as f:
@@ -48,7 +50,14 @@ class Scraper:
         else:
             print("File {} does not exist".format(file))
 
-if __name__ == '__main__':
-    scraper = Scraper()
-    print(str(scraper.get_img('https://realpython.com/api-integration-in-python/#appendix-rest-in-a-nutshell')))
+    def check_fs_img(self, data={}):
+        for file in os.listdir(self.folder):
+            if not file in data.keys():
+                data[file] = self.folder + file
+        return data
 
+    def update_img(self, data={}):
+        for key in list(data):
+            if not os.path.exists(self.folder + key) and not '.txt' in key:
+                del data[key]
+        return data

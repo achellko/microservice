@@ -1,5 +1,5 @@
-from flask import Flask, send_from_directory, jsonify
-from flask_restful import Resource, Api, request
+from flask import Flask
+from flask_restful import Resource, Api
 import txt
 import img
 
@@ -9,6 +9,9 @@ api = Api(app)
 data = {}
 text = txt.Text()
 scraper = img.Scraper()
+
+data.update(text.check_fs_text(data))
+data.update(scraper.check_fs_img(data))
 
 class Data(Resource):
     def get(self, content_type, url):
@@ -45,6 +48,16 @@ class Data(Resource):
         except KeyError:
             return "No such element: {}".format(url), 400
 
+    def put(self, content_type, url):
+        global data
+        if content_type.lower() == 'text':
+            data = text.update_text(data)
+        elif content_type.lower() == 'image':
+            data = scraper.update_img(data)
+        else:
+            return "Wrong type, must be 'text' or 'image'", 400
+
+        return data, 200
 api.add_resource(Data, "/api/<string:content_type>/<path:url>")
 
 app.run(debug=True)
