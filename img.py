@@ -5,6 +5,7 @@ except ImportError:
 
 import requests
 from bs4 import BeautifulSoup
+import os
 
 class Scraper:
     def __init__(self):
@@ -40,6 +41,12 @@ class Scraper:
             for chunk in r.iter_content(chunk_size=1024):
                 f.write(chunk)
         return [img_name,local_filename]
+
+    def delete_img(self, file):
+        if os.path.exists(file):
+            os.remove(file)
+        else:
+            print("File {} does not exist".format(file))
 
 if __name__ == '__main__':
     scraper = Scraper()
