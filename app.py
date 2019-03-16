@@ -26,6 +26,7 @@ class Data(Resource):
     READ: shows current version of data-json
     """
     def get(self, content_type, url):
+        print("Running PUT")
         global data
         return data
 
@@ -36,6 +37,7 @@ class Data(Resource):
     """
     def post(self, content_type, url):
         global data
+        print("Running POST")
         if content_type.lower() == "text":
             dict = text.get_text(url)
             data.update(dict)
@@ -53,6 +55,7 @@ class Data(Resource):
     """
     def delete(self, content_type, url):
         global data
+        print("Running DELETE")
         try:
             if content_type.lower() == 'text':
                 text.delete_text(data[url])
@@ -73,6 +76,7 @@ class Data(Resource):
     """
     def put(self, content_type, url):
         global data
+        print("Running PUT")
         if content_type.lower() == 'text':
             data = text.update_text(data)
         elif content_type.lower() == 'image':

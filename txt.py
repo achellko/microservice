@@ -10,7 +10,8 @@ class Text:
         txt_dict={}
         response = reqs.get(url)
 
-        txt_name = (url.split('/')[-1].split("?")[0] if url.split('/')[-1] else url.split('http')[1].split('/')[-2])
+        print('Starting to download text...')
+        txt_name = (url.split('/')[-1].split("?")[0].split('.html')[0]+'.txt' if url.split('/')[-1] else url.split('http')[1].split('/')[-2]+'.txt')
         local_filename = self.folder + txt_name
 
         with io.open(local_filename, "w", encoding="utf-8") as file:

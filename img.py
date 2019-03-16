@@ -18,11 +18,12 @@ class Scraper:
 
         requests.packages.urllib3.disable_warnings()  # turn off SSL warnings
 
-    def get_img(self, url='https://realpython.com/tutorials/flask/'):
+    def get_img(self, url):
         img_dict={}
-        if url in self.visited:
-            return
+        # if url in self.visited:
+        #     return
 
+        print('Starting to download images...')
         self.visited.add(url)
         content = self.session.get(url, verify=False).content
         soup = BeautifulSoup(content, "lxml")
